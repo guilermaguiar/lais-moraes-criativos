@@ -1171,10 +1171,7 @@ img {
     position: absolute;
     z-index: 0;
     pointer-events: none;
-    /* Crucial: garante que o usuário consiga clicar nos botões através da forma */
     background-color: var(--shape-color);
-
-    /* Usa o SVG como uma máscara de recorte */
     -webkit-mask-image: var(--svg-url);
     mask-image: var(--svg-url);
     -webkit-mask-size: contain;
@@ -1183,9 +1180,7 @@ img {
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
-
     opacity: 0.8;
-    /* Suaviza um pouco para manter a hierarquia visual */
 }
 
 /* Cor para fundos escuros (#716759) */
@@ -1209,4 +1204,16 @@ img {
 .footer-container {
     position: relative;
     z-index: 2;
+}
+
+/* Garante que o copyright ganhe uma camada de profundidade e venha para frente */
+.footer-copyright {
+    position: relative;
+    z-index: 5;
+}
+
+/* Força a estrela ponte a ficar acima de absolutamente tudo na transição */
+.hw-star-bridge {
+    position: absolute;
+    z-index: 15 !important;
 }

@@ -443,39 +443,44 @@
         });
 
         // ==========================================
-        // ADVANCED DYNAMIC BACKGROUND SHAPES GENERATOR (WITH COLLISION DETECTION)
+        // ADVANCED DYNAMIC BACKGROUND SHAPES (WITH COLLISION & ISOLATION)
         // ==========================================
         function generateBackgroundElements() {
             const sections = document.querySelectorAll('.hero, .benefits, .portfolio, .how-it-works, .site-footer');
-            const totalSvgFiles = 9; // Temos de element_1.svg a element_9.svg
+            const totalSvgFiles = 9;
 
             sections.forEach(section => {
-                // Dimensões exatas da seção renderizada
                 const secWidth = section.offsetWidth;
                 const secHeight = section.offsetHeight;
-
-                // Queremos MAIS elementos (entre 6 e 12 por dobra)
                 const desiredElementsCount = Math.floor(Math.random() * 7) + 6;
-                const placedRects = []; // Aqui guardaremos o espaço ocupado por cada elemento
+                const placedRects = [];
                 let attempts = 0;
-                const maxAttempts = 150; // Limite de tentativas para não travar o navegador do usuário
+                const maxAttempts = 150;
 
                 section.style.position = 'relative';
-                // Garante que formas nas bordas não criem barra de rolagem horizontal
-                section.style.overflow = 'hidden';
 
-                // Enquanto não atingir a cota E não estourar as tentativas
+                // 1. CRIA O "AQUÁRIO" ISOLADO PARA AS FORMAS DE FUNDO
+                const bgContainer = document.createElement('div');
+                bgContainer.classList.add('bg-wrapper');
+                bgContainer.style.position = 'absolute';
+                bgContainer.style.top = '0';
+                bgContainer.style.left = '0';
+                bgContainer.style.width = '100%';
+                bgContainer.style.height = '100%';
+                bgContainer.style.overflow = 'hidden'; // Corta as formas sem afetar a estrela
+                bgContainer.style.zIndex = '0'; // Prende tudo no fundo absoluto
+                bgContainer.style.pointerEvents = 'none';
+
+                // 2. ADICIONA O AQUÁRIO NO FUNDO DA SEÇÃO
+                section.prepend(bgContainer);
+
                 while (placedRects.length < desiredElementsCount && attempts < maxAttempts) {
                     attempts++;
 
-                    // Sorteia o tamanho (agora variando de 80px a 220px para caberem mais)
                     const size = Math.floor(Math.random() * 140) + 80;
-
-                    // Sorteia a posição (X e Y) garantindo que não saia da tela
                     const left = Math.floor(Math.random() * (secWidth - size));
                     const top = Math.floor(Math.random() * (secHeight - size));
 
-                    // Cria uma "caixa imaginária" em volta do elemento com uma margem de segurança de 20px
                     const gap = 20;
                     const newRect = {
                         left: left - gap,
@@ -484,19 +489,17 @@
                         bottom: top + size + gap
                     };
 
-                    // Algoritmo de Detecção de Colisão (AABB)
                     let overlaps = false;
                     for (let rect of placedRects) {
                         if (!(newRect.right < rect.left ||
                             newRect.left > rect.right ||
                             newRect.bottom < rect.top ||
                             newRect.top > rect.bottom)) {
-                            overlaps = true; // Bateu em outro elemento!
+                            overlaps = true;
                             break;
                         }
                     }
 
-                    // Se NÃO houve colisão, posiciona o elemento e salva o espaço na memória
                     if (!overlaps) {
                         placedRects.push({
                             left: left,
@@ -516,11 +519,11 @@
                         el.style.left = `${left}px`;
                         el.style.top = `${top}px`;
 
-                        // Rotaciona aleatoriamente para dar o aspecto orgânico
                         const rotation = Math.floor(Math.random() * 360);
                         el.style.transform = `rotate(${rotation}deg)`;
 
-                        section.appendChild(el);
+                        // 3. COLOCA A FORMA DENTRO DO AQUÁRIO (E NÃO NA SEÇÃO)
+                        bgContainer.appendChild(el);
                     }
                 }
             });
