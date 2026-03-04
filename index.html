@@ -535,7 +535,40 @@
         // Isso é vital para que a largura e altura das seções sejam calculadas perfeitamente.
         window.addEventListener('load', generateBackgroundElements);
 
+        // ==========================================
+        // COOKIE CONSENT BANNER
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const cookieBanner = document.getElementById('cookie-banner');
+            const acceptBtn = document.getElementById('accept-cookies');
+
+            if (!localStorage.getItem('cookieConsent')) {
+                // Show banner after a short delay for a nice entrance
+                setTimeout(() => {
+                    cookieBanner.classList.add('show');
+                }, 800);
+            }
+
+            acceptBtn.addEventListener('click', () => {
+                localStorage.setItem('cookieConsent', 'accepted');
+                cookieBanner.classList.remove('show');
+                cookieBanner.classList.add('hide'); // triggers fade out
+                setTimeout(() => {
+                    cookieBanner.style.display = 'none'; // hide entirely after transition
+                }, 500); // match CSS transition duration
+            });
+        });
+
     </script>
+
+    <!-- ========== COOKIE BANNER ========== -->
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite">
+        <p>
+            Usamos cookies para analisar o tráfego e melhorar sua experiência. Ao continuar navegando, você concorda com
+            a nossa política.
+        </p>
+        <button id="accept-cookies">Entendi</button>
+    </div>
 
 </body>
 

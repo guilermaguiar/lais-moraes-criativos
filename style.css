@@ -1217,3 +1217,73 @@ img {
     position: absolute;
     z-index: 15 !important;
 }
+
+/* ================================================
+   COOKIE CONSENT BANNER
+   ================================================ */
+.cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: var(--color-bg);
+    color: var(--color-light);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 320px;
+    padding: var(--spacing-md);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    opacity: 0;
+    transform: translateY(100px);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cookie-banner.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.cookie-banner.hide {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.cookie-banner p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.cookie-banner button {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    align-self: flex-start;
+}
+
+.cookie-banner button:hover {
+    background-color: #d4b35e;
+    transform: scale(1.02);
+}
+
+/* Responsive adjustment for Cookie Banner */
+@media (max-width: 400px) {
+    .cookie-banner {
+        /* Make it fit nicely on very small screens */
+        right: 20px;
+        max-width: none;
+        width: auto;
+    }
+}
