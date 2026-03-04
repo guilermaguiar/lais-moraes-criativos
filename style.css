@@ -1163,3 +1163,50 @@ img {
         grid-template-columns: 1fr;
     }
 }
+
+/* ================================================
+   DYNAMIC BACKGROUND ELEMENTS
+   ================================================ */
+.bg-element {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    /* Crucial: garante que o usuário consiga clicar nos botões através da forma */
+    background-color: var(--shape-color);
+
+    /* Usa o SVG como uma máscara de recorte */
+    -webkit-mask-image: var(--svg-url);
+    mask-image: var(--svg-url);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    opacity: 0.8;
+    /* Suaviza um pouco para manter a hierarquia visual */
+}
+
+/* Cor para fundos escuros (#716759) */
+.hero .bg-element,
+.portfolio .bg-element,
+.site-footer .bg-element {
+    --shape-color: #6C6254;
+}
+
+/* Cor para fundos claros (#D8D0C5) */
+.benefits .bg-element,
+.how-it-works .bg-element {
+    --shape-color: #DDD4C9;
+}
+
+/* Garantir que o conteúdo das seções fique ACIMA das formas */
+.hero-container,
+.benefits-container,
+.portfolio-container,
+.hw-container,
+.footer-container {
+    position: relative;
+    z-index: 2;
+}
