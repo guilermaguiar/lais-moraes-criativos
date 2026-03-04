@@ -1003,8 +1003,8 @@ img {
     }
 
     .portfolio-grid {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-md);
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
     }
 
     .portfolio-header {
